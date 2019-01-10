@@ -164,8 +164,11 @@ public class SearchActivity extends Activity {
 				}
 			}
 
-			private void addEntries(String roots) {
-				String[] r = roots.split(",");
+			private void addEntries(String roots, boolean split) {
+				String[] r = {roots};
+				if (split) {
+                    r = roots.split(",");
+                }
 				for (String root : r) {
 					File dir = new File(root);
 					if (!dir.isDirectory())
@@ -190,7 +193,7 @@ public class SearchActivity extends Activity {
 							if (search_mode == SEARCH_PATH)
 								compareAdd(root, entry.getName(),
 										entryFullName, true);
-							addEntries(entryFullName);
+							addEntries(entryFullName, false);
 						} else
 							compareAdd(root, entry.getName(), entryFullName,
 									false);
@@ -229,7 +232,7 @@ public class SearchActivity extends Activity {
 					regexp = true;
 					incHidden = true;
 					pattern = ".*";
-					addEntries(root);
+					addEntries(root, true);
 				} else {
 					case_sens = searchCase.isChecked();
 					known_only = searchKnown.isChecked();
@@ -250,7 +253,7 @@ public class SearchActivity extends Activity {
 					editor.commit();
 
 					// Search
-					addEntries(root);
+					addEntries(root, true);
 				}
 
 				return "OK"; // no localization? correct me
